@@ -17,12 +17,12 @@ resource "aws_flow_log" "example"{
   log_destination = "arn:aws:s3:::clc14-mari-terraform"
   log_destination_type ="s3"
   traffic_type = "ALL"
-  vpc_id ="aws_vpc.minha-vpc.id"
+  vpc_id =aws_vpc.minha-vpc.id
 }
 
 #Correcao segunda issue
 resource "aws_default_security_group""default"{
-  vpc_id = "aws_vpc.minha-vpc.id"
+  vpc_id = aws_vpc.minha-vpc.id
   
   tags = {
     Name ="my-iac-sg"
