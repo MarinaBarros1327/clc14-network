@@ -3,7 +3,7 @@ variable "vpc_name"{
   default ="vpc-terraform-v3"
 }
 
-resource "aws_vpc" "minha-vpc" {
+resource "aws_vpc" "minha_vpc" {
   cidr_block = "10.0.0.0/16"
   instance_tenancy = "default"
 
@@ -17,12 +17,12 @@ resource "aws_flow_log" "example"{
   log_destination = "arn:aws:s3:::clc14-mari-terraform"
   log_destination_type ="s3"
   traffic_type = "ALL"
-  vpc_id ="aws_vpc.minha-vpc.id"
+  vpc_id =aws_vpc.minha_vpc.id
 }
 
 #Correcao segunda issue
 resource "aws_default_security_group""default"{
-  vpc_id = "aws_vpc.minha-vpc.id"
+  vpc_id = aws_vpc.minha_vpc.id
   
   tags = {
     Name ="my-iac-sg"
@@ -31,7 +31,7 @@ resource "aws_default_security_group""default"{
 
 ##Criar subnet publica AZ A
 resource "aws_subnet" "public_subnet_1a" {
-  vpc_id     = aws_vpc.minha-vpc.id
+  vpc_id     = aws_vpc.minha_vpc.id
   cidr_block = "10.0.1.0/24"
   availability_zone = "us-east-1a"
 
@@ -42,7 +42,7 @@ resource "aws_subnet" "public_subnet_1a" {
 
 ##Criar subnet privada AZ A
 resource "aws_subnet" "private_subnet_1a" {
-  vpc_id     = aws_vpc.minha-vpc.id
+  vpc_id     = aws_vpc.minha_vpc.id
   cidr_block = "10.0.10.0/24"
   availability_zone = "us-east-1a"
 
@@ -53,7 +53,7 @@ resource "aws_subnet" "private_subnet_1a" {
 
 ##Criar subnet publica AZ b
 resource "aws_subnet" "public_subnet_1b" {
-  vpc_id     = aws_vpc.minha-vpc.id
+  vpc_id     = aws_vpc.minha_vpc.id
   cidr_block = "10.0.2.0/24"
   availability_zone = "us-east-1b"
 
@@ -64,7 +64,7 @@ resource "aws_subnet" "public_subnet_1b" {
 
 ##Criar subnet privada AZ b
 resource "aws_subnet" "private_subnet_1b" {
-  vpc_id     = aws_vpc.minha-vpc.id
+  vpc_id     = aws_vpc.minha_vpc.id
   cidr_block = "10.0.20.0/24"
   availability_zone = "us-east-1b"
 
@@ -75,7 +75,7 @@ resource "aws_subnet" "private_subnet_1b" {
 
 ## Cria a tabela de rota da subnet privada 1a
 resource "aws_route_table" "priv_rt_1a" {
-  vpc_id = aws_vpc.minha-vpc.id
+  vpc_id = aws_vpc.minha_vpc.id
 
   route {
     cidr_block     = "0.0.0.0/0"
@@ -96,7 +96,7 @@ resource "aws_route_table_association" "priv_1a_associate" {
 
 ## Cria a tabela de rota da subnet publica 1a
 resource "aws_route_table" "public_rt" {
-  vpc_id = aws_vpc.minha-vpc.id
+  vpc_id = aws_vpc.minha_vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -116,7 +116,7 @@ resource "aws_route_table_association" "pub_1a_associate" {
 
 ## Cria o internet gateway na vpc 
 resource "aws_internet_gateway" "igw" {
-  vpc_id = aws_vpc.minha-vpc.id
+  vpc_id = aws_vpc.minha_vpc.id
 
   tags = {
     Name = "igw-tf-vpc-automation"
@@ -144,7 +144,7 @@ resource "aws_nat_gateway" "nat_gw_1a" {
 
 ## Cria a tabela de rota da subnet privada 1a
 resource "aws_route_table" "priv_rt_1b" {
-  vpc_id = aws_vpc.minha-vpc.id
+  vpc_id = aws_vpc.minha_vpc.id
 
   route {
     cidr_block     = "0.0.0.0/0"
@@ -190,7 +190,7 @@ resource "aws_nat_gateway" "nat_gw_1b" {
 
 
 output "vpc_id"{
-    value=aws_vpc.minha-vpc.id
+    value=aws_vpc.minha_vpc.id
 } 
 
 
