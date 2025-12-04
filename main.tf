@@ -1,10 +1,10 @@
-variable "vpc_name"{
-  type = string
-  default ="vpc_terraform_v3"
+variable "vpc_name" {
+  type    = string
+  default = "vpc-terraform-v3"
 }
 
 resource "aws_vpc" "minha_vpc" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block       = "10.0.0.0/16"
   instance_tenancy = "default"
 
   tags = {
@@ -12,64 +12,31 @@ resource "aws_vpc" "minha_vpc" {
   }
 }
 
-#correção primeira issue
-resource "aws_flow_log" "example"{
-  log_destination = "arn:aws:s3:::clc14-mari-terraform"
-  log_destination_type ="s3"
-  traffic_type = "ALL"
-  vpc_id =aws_vpc.minha_vpc.id
+# Correcao primeira issue
+resource "aws_flow_log" "example" {
+  log_destination      = "arn:aws:s3:::clc14-mari-terraform"
+  log_destination_type = "s3"
+  traffic_type         = "ALL"
+  vpc_id               = aws_vpc.minha_vpc.id
 }
 
-#Correcao segunda issue
-resource "aws_default_security_group""default"{
+# Correcao segunda issue
+resource "aws_default_security_group" "default" {
   vpc_id = aws_vpc.minha_vpc.id
   
   tags = {
-    Name ="my-iac-sg"
+    Name = "my-iac-sg"
   }
 }
 
-##Criar subnet publica AZ A
-resource "aws_subnet" "public_subnet_1a" {
-  vpc_id     = aws_vpc.minha_vpc.id
-  cidr_block = "10.0.1.0/24"
-  availability_zone = "us-east-1a"
-
-  tags = {
-    Name = "public_subnet_1a"
-  }
-}
-
-##Criar subnet privada AZ A
+## Cria subnet privada na us-east-1a
 resource "aws_subnet" "private_subnet_1a" {
-  vpc_id     = aws_vpc.minha_vpc.id
-  cidr_block = "10.0.10.0/24"
+  vpc_id            = aws_vpc.minha_vpc.id
+  cidr_block        = "10.0.1.0/24"
   availability_zone = "us-east-1a"
 
   tags = {
-    Name = "private_subnet_1A"
-  }
-}
-
-##Criar subnet publica AZ b
-resource "aws_subnet" "public_subnet_1b" {
-  vpc_id     = aws_vpc.minha_vpc.id
-  cidr_block = "10.0.2.0/24"
-  availability_zone = "us-east-1b"
-
-  tags = {
-    Name = "public_subnet_1b"
-  }
-}
-
-##Criar subnet privada AZ b
-resource "aws_subnet" "private_subnet_1b" {
-  vpc_id     = aws_vpc.minha_vpc.id
-  cidr_block = "10.0.20.0/24"
-  availability_zone = "us-east-1b"
-
-  tags = {
-    Name = "private_subnet_1b"
+    Name = "priv-subnet-1a"
   }
 }
 
@@ -84,7 +51,7 @@ resource "aws_route_table" "priv_rt_1a" {
 
 
   tags = {
-    Name = "priv-rt-1a"
+    Name = "priv-rt-1A"
   }
 }
 
@@ -92,6 +59,18 @@ resource "aws_route_table" "priv_rt_1a" {
 resource "aws_route_table_association" "priv_1a_associate" {
   subnet_id      = aws_subnet.private_subnet_1a.id
   route_table_id = aws_route_table.priv_rt_1a.id
+}
+
+
+## Cria a subnet publica na us-east-1a
+resource "aws_subnet" "public_subnet_1a" {
+  vpc_id            = aws_vpc.minha_vpc.id
+  cidr_block        = "10.0.100.0/24"
+  availability_zone = "us-east-1a"
+
+  tags = {
+    Name = "pub-subnet-1a"
+  }
 }
 
 ## Cria a tabela de rota da subnet publica 1a
@@ -142,6 +121,19 @@ resource "aws_nat_gateway" "nat_gw_1a" {
   depends_on = [aws_internet_gateway.igw]
 }
 
+##########################################
+
+## Cria subnet privada na us-east-1a
+resource "aws_subnet" "private_subnet_1b" {
+  vpc_id            = aws_vpc.minha_vpc.id
+  cidr_block        = "10.0.2.0/24"
+  availability_zone = "us-east-1b"
+
+  tags = {
+    Name = "priv-subnet-1b"
+  }
+}
+
 ## Cria a tabela de rota da subnet privada 1a
 resource "aws_route_table" "priv_rt_1b" {
   vpc_id = aws_vpc.minha_vpc.id
@@ -162,6 +154,20 @@ resource "aws_route_table_association" "priv_1b_associate" {
   subnet_id      = aws_subnet.private_subnet_1b.id
   route_table_id = aws_route_table.priv_rt_1b.id
 }
+
+
+## Cria a subnet publica na us-east-1a
+resource "aws_subnet" "public_subnet_1b" {
+  vpc_id            = aws_vpc.minha_vpc.id
+  cidr_block        = "10.0.200.0/24"
+  availability_zone = "us-east-1b"
+
+  tags = {
+    Name = "pub-subnet-1b"
+  }
+}
+
+
 ## Associa a rt pub-rt-1a com a subnet publica pub-subnet-1a 
 resource "aws_route_table_association" "pub_1b_associate" {
   subnet_id      = aws_subnet.public_subnet_1b.id
@@ -186,6 +192,3 @@ resource "aws_nat_gateway" "nat_gw_1b" {
   # on the Internet Gateway for the VPC.
   depends_on = [aws_internet_gateway.igw]
 }
-
-
-
