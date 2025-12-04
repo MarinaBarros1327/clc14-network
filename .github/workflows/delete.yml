@@ -7,33 +7,36 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
   AWS_DEFAULT_REGION: us-east-1
-  
+
+concurrency:
+  group: terraform-network
+  cancel-in-progress: true
+
 jobs:
   destroy:
     name: "Destroy Infrastructure"
     runs-on: ubuntu-latest
     environment: production
-    
+
     defaults:
       run:
         shell: bash
-    
+
     steps:
-        - name: Checkout
-          uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-        - name: Setup Terraform
-          uses: hashicorp/setup-terraform@v3
-          with:
-            terraform_wrapper: false
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
 
-        - name: Terraform Init
-          run: terraform init
-          
-        - name: Show Destroy plan
-          run: terraform plan -destroy
-          continue-on-error: true
-          
-        - name: Destroy resources jobs
-          id: destroy
-          run: terraform destroy --auto-approve
+      - name: Terraform Init
+        run: terraform init -backend-config="region=${{ env.AWS_DEFAULT_REGION }}" -reconfigure
+
+      - name: Terraform Plan (Destroy)
+        run: terraform plan -destroy
+
+      - name: Terraform Destroy
+        run: terraform destroy --auto-approve
+        timeout-minutes: 40

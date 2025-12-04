@@ -10,6 +10,10 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+  
+  concurrency:
+  group: terraform-network
+  cancel-in-progress: true
 
 jobs:
   Checkov:
@@ -49,7 +53,12 @@ jobs:
           terraform_wrapper: false
 
       - name: Terraform Init
-        run: terraform init
-        
+        run: terraform init -backend-config="bucket=clc14-mari-terraform" \
+                             -backend-config="key=network/terraform.tfstate" \
+                             -backend-config="region=${{ env.AWS_REGION }}" -reconfigure
+
+      - name: Terraform Plan
+        run: terraform plan
+
       - name: Terraform Apply
         run: terraform apply --auto-approve
