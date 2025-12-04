@@ -46,16 +46,16 @@ No modules.
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_internet_gateway_id"></a> **internet_gateway_id** | ID do Internet Gateway criado |
-| <a name="output_nat_gateway_1a"></a> **nat_gateway_1a** | ID do NAT Gateway na AZ 1a |
-| <a name="output_nat_gateway_1b"></a> **nat_gateway_1b** | ID do NAT Gateway na AZ 1b |
-| <a name="output_route_table_private_1a"></a> **route_table_private_1a** | ID da Route Table privada da AZ 1a |
-| <a name="output_route_table_private_1b"></a> **route_table_private_1b** | ID da Route Table privada da AZ 1b |
-| <a name="output_route_table_public"></a> **route_table_public** | ID da Route Table pública da VPC |
-| <a name="output_subnet_privada_1a"></a> **subnet_privada_1a** | ID da Subnet privada da AZ 1a |
-| <a name="output_subnet_privada_1b"></a> **subnet_privada_1b** | ID da Subnet privada da AZ 1b |
-| <a name="output_subnet_publica_1a"></a> **subnet_publica_1a** | ID da Subnet pública da AZ 1a |
-| <a name="output_subnet_publica_1b"></a> **subnet_publica_1b** | ID da Subnet pública da AZ 1b |
-| <a name="output_vpc_id"></a> **vpc_id** | ID da VPC criada |
+| Name | Description | Value |
+|------|-------------|-------|
+| <a name="output_internet_gateway_id"></a> **internet_gateway_id** | ID do Internet Gateway criado | `igw-01d9cf7185ce438ef` |
+| <a name="output_nat_gateway_1a"></a> **nat_gateway_1a** | ID do NAT Gateway na AZ 1a | `nat-0cdc06c663617a122` |
+| <a name="output_nat_gateway_1b"></a> **nat_gateway_1b** | ID do NAT Gateway na AZ 1b | `nat-0e1c90bc58c795f52` |
+| <a name="output_route_table_private_1a"></a> **route_table_private_1a** | ID da Route Table privada da AZ 1a | `rtb-061f95f84e7e59e73` |
+| <a name="output_route_table_private_1b"></a> **route_table_private_1b** | ID da Route Table privada da AZ 1b | `rtb-04251375c2f5dbd10` |
+| <a name="output_route_table_public"></a> **route_table_public** | ID da Route Table pública da VPC | `rtb-09629113f81dde7f4` |
+| <a name="output_subnet_privada_1a"></a> **subnet_privada_1a** | ID da Subnet privada da AZ 1a | `subnet-0f6a1ce4467c2d70d` |
+| <a name="output_subnet_privada_1b"></a> **subnet_privada_1b** | ID da Subnet privada da AZ 1b | `subnet-086477ed351ca31bb` |
+| <a name="output_subnet_publica_1a"></a> **subnet_publica_1a** | ID da Subnet pública da AZ 1a | `subnet-091a8c3c9a1b34e4a` |
+| <a name="output_subnet_publica_1b"></a> **subnet_publica_1b** | ID da Subnet pública da AZ 1b | `subnet-0ed1c9a4da7393e53` |
+| <a name="output_vpc_id"></a> **vpc_id** | ID da VPC criada | `vpc-0d3a2e405f49ed12b` |
